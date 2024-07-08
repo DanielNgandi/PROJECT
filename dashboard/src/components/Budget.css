@@ -1,0 +1,13 @@
+.budget-page {
+    background-image: url('../assets/budget.JPG');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh; /* Full viewport height */
+    width: 100%;
+  }
+  
+
+  .me-auto{
+    color: blue;
+  }

@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios'; // Import Axios if you installed it
+import "../components/style.css"
+import { useNavigate } from 'react-router-dom';
 
-
-const AuthForm = () => {
+const AuthForm = ({ setIsAuthenticated }) => {
   const [mode, setMode] = useState('sign-up');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate(); // Initialize navigate
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -47,8 +49,8 @@ const AuthForm = () => {
           setMode('sign-in'); // Switch to sign-in mode after signup
         } else if (mode === 'sign-in') {
           alert('Signin successful! Welcome back.');
-          // Handle redirection to dashboard or another page after signin
-          // Example: redirectToDashboard();
+          setIsAuthenticated(true); // Update the authentication state
+          navigate('/budget'); // Redirect to the budget page
         } else if (mode === 'reset-password') {
           alert('Password reset successful! You can now sign in with your new password.');
           setMode('sign-in'); // Switch to sign-in mode after password reset
@@ -68,6 +70,7 @@ const AuthForm = () => {
 
 
   return (
+    <div className="form-container">
     <div className="sign-up form">
       <h2 id="title">{mode === 'reset-password' ? 'Reset Password' : mode}</h2>
       <form onSubmit={handleSubmit} id="authForm">
@@ -132,6 +135,7 @@ const AuthForm = () => {
           </button>
         </div>
       </form>
+    </div>
     </div>
   );
 };
