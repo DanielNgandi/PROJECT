@@ -1,7 +1,7 @@
 import React, { useState, useEffect }from 'react'
-import AuthForm from './components/AuthForm';
+import AuthForm from "./components/authentication/AuthForm"
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import Budget from './components/budget';
+import Budget from './pages/Budget';
 import { BudgetsProvider } from './context/BudgetContex';
 
 const App = () => {
@@ -13,19 +13,23 @@ const App = () => {
     if (token) {
       setIsAuthenticated(true);
     }
-  }, []);
+  }, [])
 
   return  (
-    <Router>
-      <BudgetsProvider>
-      <Routes>
-        <Route path="/signin" element={<AuthForm setIsAuthenticated={setIsAuthenticated} />} />
-        <Route path="/budget" element={isAuthenticated ? <Budget /> : <Navigate to="/signin" />} />
-        <Route path="/" element={<Navigate to="/signin" />} />
-      </Routes>
-      </BudgetsProvider>
-    </Router>
-  );
+    <Budget />
+    // <BudgetsProvider>
+    // <Router>
+      
+    //   <Routes>
+    //     <Route path="/signin" element={<AuthForm setIsAuthenticated={setIsAuthenticated} />} />
+    //     <Route path="/Budget" element={isAuthenticated ? <Budget /> : <Navigate to="/signin" />} />
+    //     <Route path="/" element={<Navigate to="/signin" />} />
+    //   </Routes>
+      
+    // </Router>
+    // </BudgetsProvider>
+  )
 };
 
 export default App;
+

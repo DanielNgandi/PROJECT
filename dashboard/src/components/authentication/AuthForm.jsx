@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios'; // Import Axios if you installed it
-import "../components/style.css"
+import "../authentication/style.css";
 import { useNavigate } from 'react-router-dom';
 
 const AuthForm = ({ setIsAuthenticated }) => {

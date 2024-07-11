@@ -1,8 +1,7 @@
 import React from 'react'
-import { Button, Card, ProgressBar, Stack } from 'react-bootstrap'
-import { currencyFormatter } from '../utils.jsx'
+import { Button, Card, ProgressBar, Stack } from 'react-bootstrap';
 
-export const BudgetCard = ({ name, amount, max, gray}) => {
+export const BudgetCard = ({ name, amount, max, gray, onAddExpenseClick}) => {
   const classNames = []
   if (amount > max) {
     classNames.push ("bg-danger", "dg-opacity-10")
@@ -15,8 +14,8 @@ export const BudgetCard = ({ name, amount, max, gray}) => {
         <Card.Title className="d-flex justify-content-between align-items-baseline fw-normal mb-3">
             <div className='me-2'>{name}</div>
             <div className='d-flex align-items-baseline'>
-              {currencyFormatter.format(amount)} 
-              <span className='text-muted fs-6 ms-2'>/{currencyFormatter.format(max)}</span>
+              {amount} 
+              <span className='text-muted fs-6 ms-2'>/{max}</span>
               </div>
         </Card.Title>
         <ProgressBar className='rounded-pill' variant= {getProgressBarVariant(amount, max)}
@@ -25,7 +24,7 @@ export const BudgetCard = ({ name, amount, max, gray}) => {
         now={amount}
         />
         <Stack direction='horizontal' gap="2" className='mt-4'>
-          <Button variant='outline-primary' className='ms-auto' >Add Expense</Button>
+          <Button variant='outline-primary' className='ms-auto' onClick={onAddExpenseClick}>Add Expense</Button>
           <Button variant='outline-secondary' className='ms-auto' >view Expenses</Button>
         </Stack>
       </Card.Body>
