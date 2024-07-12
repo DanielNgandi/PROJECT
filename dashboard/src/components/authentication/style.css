@@ -1,0 +1,40 @@
+.form-container{
+    width: 350px;
+    background-color: rgb(221, 90, 151);
+    border-radius: 5px;
+    margin: auto;
+    margin-top: 30px;
+    
+}
+
+.sign-up form{
+    padding: 50px;
+}
+.reg-button{
+    display: flex;
+    
+}
+.input-field {
+   margin: 5px;
+   border-radius: 3px;
+   display: flex; 
+   align-items: center;
+   max-height: 65px;
+   transition: max-height 0.5s;
+   overflow: hidden;
+}
+#sign-upbtn, #sign-inbtn{
+    border-radius: 5px;
+}
+.reg-button button.disable{
+   background-color: aqua;
+   color: blanchedalmond;
+}
+.reg-button button{
+    flex-basis: 48%;
+    background-color: #3c00a0;
+    color: #fff;
+    outline: 0;
+    cursor: pointer;
+    transition: background 1s;
+}

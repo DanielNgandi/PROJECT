@@ -1,0 +1,11 @@
+.budget-page {
+    background-image: url('../assets/budget.JPG');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  
+
+  .me-auto{
+    color: blue;
+  }
