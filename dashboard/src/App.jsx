@@ -16,18 +16,18 @@ const App = () => {
   }, [])
 
   return  (
-    <Budget />
-    // <BudgetsProvider>
-    // <Router>
+    
+    <BudgetsProvider>
+    <Router>
       
-    //   <Routes>
-    //     <Route path="/signin" element={<AuthForm setIsAuthenticated={setIsAuthenticated} />} />
-    //     <Route path="/Budget" element={isAuthenticated ? <Budget /> : <Navigate to="/signin" />} />
-    //     <Route path="/" element={<Navigate to="/signin" />} />
-    //   </Routes>
+      <Routes>
+        <Route path="/signin" element={<AuthForm setIsAuthenticated={setIsAuthenticated} />} />
+        <Route path="/Budget" element={isAuthenticated ? <Budget /> : <Navigate to="/signin" />} />
+        <Route path="/" element={<Navigate to="/signin" />} />
+      </Routes>
       
-    // </Router>
-    // </BudgetsProvider>
+    </Router>
+    </BudgetsProvider>
   )
 };
 

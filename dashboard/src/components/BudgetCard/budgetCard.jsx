@@ -1,7 +1,14 @@
 import React from 'react'
 import { Button, Card, ProgressBar, Stack } from 'react-bootstrap';
 
-export const BudgetCard = ({ name, amount, max, gray, onAddExpenseClick}) => {
+export const BudgetCard = ({ 
+  name, 
+  amount, 
+  max, 
+  gray, 
+  hideButtons, 
+  onAddExpenseClick,
+  onViewExpensesClick}) => {
   const classNames = []
   if (amount > max) {
     classNames.push ("bg-danger", "dg-opacity-10")
@@ -15,18 +22,27 @@ export const BudgetCard = ({ name, amount, max, gray, onAddExpenseClick}) => {
             <div className='me-2'>{name}</div>
             <div className='d-flex align-items-baseline'>
               {amount} 
-              <span className='text-muted fs-6 ms-2'>/{max}</span>
+             {max && (<span className='text-muted fs-6 ms-2'>/{max}</span>)} 
               </div>
         </Card.Title>
-        <ProgressBar className='rounded-pill' variant= {getProgressBarVariant(amount, max)}
+       {max && (<ProgressBar className='rounded-pill' variant= {getProgressBarVariant(amount, max)}
         min={0}
         max={max}
         now={amount}
         />
-        <Stack direction='horizontal' gap="2" className='mt-4'>
-          <Button variant='outline-primary' className='ms-auto' onClick={onAddExpenseClick}>Add Expense</Button>
-          <Button variant='outline-secondary' className='ms-auto' >view Expenses</Button>
+        )} 
+       {!hideButtons &&( 
+        <Stack direction='horizontal' 
+       gap="2" className='mt-4'>
+          <Button variant='outline-primary'
+           className='ms-auto' onClick={onAddExpenseClick}>
+            Add Expense
+            </Button>
+          <Button variant='outline-secondary' 
+          className='ms-auto' onClick={onViewExpensesClick} >view Expenses
+          </Button>
         </Stack>
+        )}
       </Card.Body>
     </Card>
   )
