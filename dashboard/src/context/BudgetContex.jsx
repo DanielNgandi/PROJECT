@@ -34,12 +34,18 @@ console.log(expenses)
      });
    }
    console.log(addBudget)
-   function deleteBudget (id){
+   function deleteBudget ({id}){
      setBudgets(prevBudgets => {
+     setExpenses(prevExpenses => {
+      return prevExpenses.map(expense => {
+        if (expense.budgetId !==id) return expense
+        return {...expense, budgetId: UNCATEGORIZED_BUDGET_ID}
+      })
+     })
         return prevBudgets.filter(budget => budget.id !== id)
      });
    }
-   function deleteExpense(id){
+   function deleteExpense({id}){
     setExpenses(prevExpenses => {
         return prevExpenses.filter( expenses=> expenses.id !== id)
      });

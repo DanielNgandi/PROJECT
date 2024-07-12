@@ -20,6 +20,7 @@ export default function AddExpenseModal({ show, handleClose, defaultBudgetId }) 
         amount: parseFloat(amountRef.current.value),
         
   })
+  handleClose();
   };
   return (
     <Modal show={show} onHide={handleClose}>

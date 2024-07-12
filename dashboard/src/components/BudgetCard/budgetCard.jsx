@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button, Card, ProgressBar, Stack } from 'react-bootstrap';
 
 export const BudgetCard = ({ 
@@ -15,6 +15,13 @@ export const BudgetCard = ({
   } else if (gray) {
     classNames.push("bg-light")
   }
+
+  useEffect(() => {
+    if (amount > max) {
+      alert(`${name} hello budget exceeding! Amount: ${amount}, Max: ${max}`)
+    }
+  }, [amount, max, name])
+
   return (
     <Card className={classNames.join(" ")}>
       <Card.Body>
