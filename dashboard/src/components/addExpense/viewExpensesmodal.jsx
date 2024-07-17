@@ -1,14 +1,15 @@
 import React from 'react'
 import { Modal, Button, Stack } from 'react-bootstrap'
-import {UNCATEGORIZED_BUDGET_ID, useBudgets} from '../../context/BudgetContex'
+import {UNCATEGORIZED_BUDGET_NAME, useBudgets} from '../../context/BudgetContex'
 
 export default function ViewExpensesModal({ budgetId, handleClose }) {
 
   const { getBudgetExpenses, budgets, deleteBudget, deleteExpense } = useBudgets()
   const expenses = getBudgetExpenses(budgetId)
 
-  const budget = UNCATEGORIZED_BUDGET_ID === budgetId ? 
-  {name: "Uncategorized", id: UNCATEGORIZED_BUDGET_ID} : budgets.find (b => b.id === budgetId)
+  const budget = UNCATEGORIZED_BUDGET_NAME === budgetId ? 
+  {name: "Uncategorized", id: UNCATEGORIZED_BUDGET_NAME} 
+  : budgets.find(b => b.id === budgetId)
   return (
     <>
     <Modal show={budgetId != null} onHide={handleClose}>
@@ -16,10 +17,10 @@ export default function ViewExpensesModal({ budgetId, handleClose }) {
           <Modal.Title>
             <Stack direction="horizontal" gap="3">
                 <div>Expenses - {budget?.name}</div>
-                {budgetId !== UNCATEGORIZED_BUDGET_ID && (
+                {budgetId !== UNCATEGORIZED_BUDGET_NAME && (
                     <Button onClick={() => {
                         deleteBudget(budget)
-                        handleClose()
+                        handleClose();
                     }}  
                     variant='outline-danger '>Delete</Button>
                 )}

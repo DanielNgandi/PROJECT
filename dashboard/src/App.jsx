@@ -16,7 +16,7 @@ const App = () => {
   }, [])
 
   return  (
-    
+    // <Budget />
     <BudgetsProvider>
     <Router>
       

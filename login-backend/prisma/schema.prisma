@@ -13,3 +13,22 @@ model logins{
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 }
+
+model Budget {
+  id        Int      @id @default(autoincrement())
+  name      String
+  max       Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  expenses  Expense[]
+}
+
+model Expense {
+  id          Int      @id @default(autoincrement())
+  description String
+  amount      Float
+  budgetId    Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  Budget      Budget   @relation(fields: [budgetId], references: [id])
+}

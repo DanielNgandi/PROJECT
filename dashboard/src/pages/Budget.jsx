@@ -5,7 +5,7 @@ import Container from 'react-bootstrap/Container';
 import {BudgetCard} from '../components/BudgetCard/budgetCard';
 import '../pages/Budget.css'
 import AddBudgetModal from '../components/addBudget/addBudgetmodal';
-import { UNCATEGORIZED_BUDGET_ID, useBudgets } from '../context/BudgetContex';
+import { UNCATEGORIZED_BUDGET_NAME, useBudgets } from '../context/BudgetContex';
 import AddExpenseModal from '../components/addExpense/addExpensemodal';
 import TotalBudgetCard from '../components/Total/TotalBudget';
 import UncategorizedBudgetCard from '../components/uncategorizedBudget/uncategorizedBudgetCard';
@@ -24,6 +24,10 @@ const Budget= () => {
     setShowAddExpenseModal(true);
     setAddExpenseModalBudgetId(budgetId)
   }
+  function handleDeleteBudget(id) {
+    deleteBudget({ id });
+  }
+
   return (
     <div className="budget-page">
     <Container>
@@ -31,7 +35,7 @@ const Budget= () => {
 
         <h1 className="me-auto">Budgets</h1>
         <Button variant="primary" onClick={() => setShowAddBudgetModal (true)}>Add Budget</Button>
-        <Button variant="secondary" onClick={() => openAddExpenseModal (true)}>Add Expenses</Button>
+        <Button variant="secondary" onClick={() => openAddExpenseModal (UNCATEGORIZED_BUDGET_NAME)}>Add Expenses</Button>
       </Stack> 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
         gap: "1rem", alignItems:"flex-start",
@@ -48,13 +52,14 @@ const Budget= () => {
      max={budget.max}
      onAddExpenseClick = {() =>openAddExpenseModal(budget.id)}
      onViewExpensesClick = {() =>setViewExpensesModalBudgetId(budget.id)}
+     onDeleteClick={() => handleDeleteBudget(budget.id)} 
 
      />
       )
   })
    }
   <UncategorizedBudgetCard onAddExpenseClick = 
-  {openAddExpenseModal}  onViewExpenseClick = {()=> setViewExpensesModalBudgetId(UNCATEGORIZED_BUDGET_ID)}/>
+  {openAddExpenseModal}  onViewExpensesClick = {()=> setViewExpensesModalBudgetId(UNCATEGORIZED_BUDGET_NAME)}/>
     
   <TotalBudgetCard />
    </div>

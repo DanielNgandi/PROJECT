@@ -1,6 +1,6 @@
 // routes.js
 const express = require('express');
-const { signup, signin, resetPassword } = require('../controllers/controllers');
+const { signup, signin, resetPassword } = require('../controllers/logincontrollers');
 
 const router = express.Router();
 

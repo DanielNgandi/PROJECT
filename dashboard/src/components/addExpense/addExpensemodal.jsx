@@ -1,7 +1,7 @@
 import React from 'react'
 import {Form, Modal, Button } from 'react-bootstrap'
 import { useRef } from 'react'
-import {UNCATEGORIZED_BUDGET_ID, useBudgets} from '../../context/BudgetContex'
+import {UNCATEGORIZED_BUDGET_NAME, useBudgets} from '../../context/BudgetContex'
 
 export default function AddExpenseModal({ show, handleClose, defaultBudgetId }) {
   const descriptionRef = useRef()
@@ -15,8 +15,8 @@ export default function AddExpenseModal({ show, handleClose, defaultBudgetId }) 
     e.preventDefault()
     addExpense(
     {
-        budgetId: budgetIdRef.current.value,
-        description: descriptionRef.current.value, 
+      budgetId: budgetIdRef.current.value === UNCATEGORIZED_BUDGET_NAME? UNCATEGORIZED_BUDGET_NAME : parseInt(budgetIdRef.current.value),
+      description: descriptionRef.current.value, 
         amount: parseFloat(amountRef.current.value),
         
   })
@@ -40,7 +40,7 @@ export default function AddExpenseModal({ show, handleClose, defaultBudgetId }) 
           <Form.Group className='mb-3' controlId='budgetId'>
             <Form.Label>budget</Form.Label>
             <Form.Select defaultValue={defaultBudgetId} ref={budgetIdRef}>
-                <option id= {UNCATEGORIZED_BUDGET_ID}>Uncategorized</option>
+                <option id= {UNCATEGORIZED_BUDGET_NAME}>Uncategorized</option>
                 {budgets.map(budget =>(
                     <option key = {budget.id} value ={budget.id}>{budget.name}</option>
                 ))}
