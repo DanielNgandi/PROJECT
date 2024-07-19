@@ -15,9 +15,9 @@ export default function AddExpenseModal({ show, handleClose, defaultBudgetId }) 
     e.preventDefault()
     addExpense(
     {
-      budgetId: budgetIdRef.current.value === UNCATEGORIZED_BUDGET_NAME? UNCATEGORIZED_BUDGET_NAME : parseInt(budgetIdRef.current.value),
+      budgetId: budgetIdRef.current.value === UNCATEGORIZED_BUDGET_NAME ? UNCATEGORIZED_BUDGET_NAME : parseInt(budgetIdRef.current.value),
       description: descriptionRef.current.value, 
-        amount: parseFloat(amountRef.current.value),
+      amount: parseFloat(amountRef.current.value),
         
   })
   handleClose();
@@ -35,15 +35,15 @@ export default function AddExpenseModal({ show, handleClose, defaultBudgetId }) 
           </Form.Group>
           <Form.Group className='mb-3' controlId='amount'>
             <Form.Label>amount</Form.Label>
-            <Form.Control ref={amountRef} type='number' required min={0} step={10.0} />
+            <Form.Control ref={amountRef} type='number' required min={0} step={0.01} />
           </Form.Group>
           <Form.Group className='mb-3' controlId='budgetId'>
-            <Form.Label>budget</Form.Label>
+            <Form.Label>Budget</Form.Label>
             <Form.Select defaultValue={defaultBudgetId} ref={budgetIdRef}>
-                <option id= {UNCATEGORIZED_BUDGET_NAME}>Uncategorized</option>
-                {budgets.map(budget =>(
+                 <option value= {UNCATEGORIZED_BUDGET_NAME}>Uncategorized</option>
+                 {budgets.filter(budget => budget.name !== UNCATEGORIZED_BUDGET_NAME).map(budget => (
                     <option key = {budget.id} value ={budget.id}>{budget.name}</option>
-                ))}
+                ))} 
                 </Form.Select>
           </Form.Group>
           <div className='d-flex justify-content-end'>

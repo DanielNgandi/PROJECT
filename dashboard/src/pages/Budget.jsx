@@ -10,8 +10,12 @@ import AddExpenseModal from '../components/addExpense/addExpensemodal';
 import TotalBudgetCard from '../components/Total/TotalBudget';
 import UncategorizedBudgetCard from '../components/uncategorizedBudget/uncategorizedBudgetCard';
 import ViewExpensesModal from '../components/addExpense/viewExpensesmodal';
+import { useLocation } from 'react-router-dom';
 
 const Budget= () => {
+  const location = useLocation();
+  const username = location.state?.username || 'User';
+
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false);
   const [showAddExpenseModal, setShowAddExpenseModal] = useState(false);
   const [viewExpensesModalBudgetId, setViewExpensesModalBudgetId] = useState();
@@ -27,13 +31,19 @@ const Budget= () => {
   function handleDeleteBudget(id) {
     deleteBudget({ id });
   }
+  
 
   return (
     <div className="budget-page">
     <Container>
+    <header className="header">
+    <h2>Welcome, {username}!</h2>
+    </header>
+    <div className='budget'>
+    <p>This is my budget application</p>
+    </div>
       <Stack direction="horizontal" gap="2" className="mb-4">
-
-        <h1 className="me-auto">Budgets</h1>
+        <h3 className="me-auto">Budgets</h3>
         <Button variant="primary" onClick={() => setShowAddBudgetModal (true)}>Add Budget</Button>
         <Button variant="secondary" onClick={() => openAddExpenseModal (UNCATEGORIZED_BUDGET_NAME)}>Add Expenses</Button>
       </Stack> 
@@ -46,7 +56,8 @@ const Budget= () => {
     budgets.map((budget)=>{
       const amount = getBudgetExpenses(budget.id).reduce((total, expenses) => total + expenses.amount, 0);
       return (
-     <BudgetCard key={budget.id} 
+     <BudgetCard 
+     key={budget.id} 
      name={budget.name} 
      amount={amount} 
      max={budget.max}

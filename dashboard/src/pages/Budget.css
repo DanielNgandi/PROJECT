@@ -10,3 +10,13 @@
   .me-auto{
     color: blue;
   }
+  .header {
+    color: brown;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+  .budget{
+    color: brown;
+  }

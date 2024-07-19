@@ -30,18 +30,19 @@ async function addExpense({ description, amount, budgetId }) {
         
         let uncategorizedBudget = budgets.find(b => b.name === UNCATEGORIZED_BUDGET_NAME);
         if (!uncategorizedBudget) {
-          const response = await axios.post('http://localhost:5500/budgets', { name: UNCATEGORIZED_BUDGET_NAME, max: 0 });
+          const response = await axios.post('http://localhost:5500/budgets', { name: UNCATEGORIZED_BUDGET_NAME, max: 0});
           uncategorizedBudget = response.data;
           setBudgets(prevBudgets => [...prevBudgets, uncategorizedBudget]);
         }
         parsedBudgetId = uncategorizedBudget.id;
       }
 
-      const payload = { description, amount, budgetId: parsedBudgetId };
+      const payload = { description,  amount: parseFloat(amount), budgetId: parsedBudgetId };
       console.log("Payload to send:", payload);
 
       const response = await axios.post('http://localhost:5500/expenses', payload);
       setExpenses(prevExpenses => [...prevExpenses, response.data]);
+      console.log('Updated Expenses:', [...prevExpenses, response.data]);
     } catch (error) {
       console.error("Error adding expense:", error);
     }
@@ -59,7 +60,7 @@ async function deleteBudget ({id}){
   setBudgets(prevBudgets => prevBudgets.filter(budget => budget.id !== id));
   setExpenses(prevExpenses => prevExpenses.map(expense => {
     if (expense.budgetId !== id) return expense;
-    return { ...expense, budgetId: UNCATEGORIZED_BUDGET_ID };
+    return { ...expense, budgetId: UNCATEGORIZED_BUDGET_NAME };
   }));
 } catch (error) {
   console.error("Error deleting budget:", error);

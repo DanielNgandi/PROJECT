@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { Button, Card, ProgressBar, Stack } from 'react-bootstrap';
-
+import { UNCATEGORIZED_BUDGET_NAME } from '../../context/BudgetContex';
 export const BudgetCard = ({ 
   name, 
   amount, 
@@ -8,17 +8,19 @@ export const BudgetCard = ({
   gray, 
   hideButtons, 
   onAddExpenseClick,
-  onViewExpensesClick}) => {
+  onViewExpensesClick
+}) => {
+
   const classNames = []
-  if (amount > max) {
+   if (amount > max && name !== UNCATEGORIZED_BUDGET_NAME) {
     classNames.push ("bg-danger", "dg-opacity-10")
   } else if (gray) {
     classNames.push("bg-light")
   }
 
   useEffect(() => {
-    if (amount > max) {
-      alert(`${name} hello budget exceeding! Amount: ${amount}, Max: ${max}`)
+    if (amount > max && name !== UNCATEGORIZED_BUDGET_NAME) {
+      alert(`Hello, ${name} budget exceeding! Amount: ${amount}, Max: ${max}`)
     }
   }, [amount, max, name])
 
@@ -27,12 +29,14 @@ export const BudgetCard = ({
       <Card.Body>
         <Card.Title className="d-flex justify-content-between align-items-baseline fw-normal mb-3">
             <div className='me-2'>{name}</div>
-            <div className='d-flex align-items-baseline'>
+            <div className='d-flex align-items-center'>
               {amount} 
-             {max && (<span className='text-muted fs-6 ms-2'>/{max}</span>)} 
-              </div>
+              {max && name !== UNCATEGORIZED_BUDGET_NAME && max !== 0 &&  (<span className='text-muted fs-6 ms-2' > / {max}</span>)}          
+            </div>
         </Card.Title>
-       {max && (<ProgressBar className='rounded-pill' variant= {getProgressBarVariant(amount, max)}
+        {max && name !== UNCATEGORIZED_BUDGET_NAME && max !== 0 &&(
+          <ProgressBar className='rounded-pill' 
+            variant={getProgressBarVariant(amount, max)}       
         min={0}
         max={max}
         now={amount}

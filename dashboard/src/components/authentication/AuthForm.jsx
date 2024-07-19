@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios'; // Import Axios if you installed it
+import axios from 'axios'; 
 import "../authentication/style.css";
 import { useNavigate } from 'react-router-dom';
 
@@ -8,7 +8,7 @@ const AuthForm = ({ setIsAuthenticated }) => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate(); // Initialize navigate
+  const navigate = useNavigate(); 
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -46,14 +46,14 @@ const AuthForm = ({ setIsAuthenticated }) => {
       if (response.status === 200 || response.status === 201) {
         if (mode === 'sign-up') {
           alert('Signup successful! You can now sign in.');
-          setMode('sign-in'); // Switch to sign-in mode after signup
+          setMode('sign-in'); 
         } else if (mode === 'sign-in') {
           alert('Signin successful! Welcome back.');
-          setIsAuthenticated(true); // Update the authentication state
-          navigate('/budget'); // Redirect to the budget page
+          setIsAuthenticated(true); 
+          navigate('/budget',  { state: { username: userData.username } }); 
         } else if (mode === 'reset-password') {
           alert('Password reset successful! You can now sign in with your new password.');
-          setMode('sign-in'); // Switch to sign-in mode after password reset
+          setMode('sign-in'); 
         }
       } else {
         throw new Error(data.error || 'Request failed: Server error');
