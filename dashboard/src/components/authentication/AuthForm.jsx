@@ -2,12 +2,15 @@ import React, { useState } from 'react';
 import axios from 'axios'; 
 import "../authentication/style.css";
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '../../context/logincontex';
 
 const AuthForm = ({ setIsAuthenticated }) => {
   const [mode, setMode] = useState('sign-up');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { login } = useUser();
+
   const navigate = useNavigate(); 
 
   const handleSubmit = async (event) => {
@@ -50,6 +53,8 @@ const AuthForm = ({ setIsAuthenticated }) => {
         } else if (mode === 'sign-in') {
           alert('Signin successful! Welcome back.');
           setIsAuthenticated(true); 
+          localStorage.setItem('authToken', data.token);
+          login({ id: data.token, username: data.username }); 
           navigate('/budget',  { state: { username: userData.username } }); 
         } else if (mode === 'reset-password') {
           alert('Password reset successful! You can now sign in with your new password.');

@@ -10,11 +10,14 @@ import AddExpenseModal from '../components/addExpense/addExpensemodal';
 import TotalBudgetCard from '../components/Total/TotalBudget';
 import UncategorizedBudgetCard from '../components/uncategorizedBudget/uncategorizedBudgetCard';
 import ViewExpensesModal from '../components/addExpense/viewExpensesmodal';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import {useUser} from "../context/logincontex"
 
 const Budget= () => {
   const location = useLocation();
   const username = location.state?.username || 'User';
+  const navigate = useNavigate();
+  const { logout } = useUser(); 
 
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false);
   const [showAddExpenseModal, setShowAddExpenseModal] = useState(false);
@@ -31,7 +34,35 @@ const Budget= () => {
   function handleDeleteBudget(id) {
     deleteBudget({ id });
   }
-  
+  function handleLogout() {
+    logout();
+    navigate('/signin');
+  }
+  function convertToCSV(array) {
+    const header = Object.keys(array[0]).join(',');
+    const rows = array.map(obj => Object.values(obj).join(','));
+    return [header, ...rows].join('\n');
+  }
+
+  function downloadCSV(content, fileName) {
+    const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', fileName);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  function handleDownloadExpense() {
+    if (expense.length === 0) {
+      alert('No expense to download.');
+      return;
+    }
+    const csvContent = convertToCSV(expense);
+    downloadCSV(csvContent, 'expenses.csv');
+  }
 
   return (
     <div className="budget-page">
@@ -47,6 +78,8 @@ const Budget= () => {
         <Button variant="primary" onClick={() => setShowAddBudgetModal (true)}>Add Budget</Button>
         <Button variant="secondary" onClick={() => openAddExpenseModal (UNCATEGORIZED_BUDGET_NAME)}>Add Expenses</Button>
       </Stack> 
+      <Button variant="danger" onClick={handleLogout}>Logout</Button>
+      <Button variant="info" onClick={handleDownloadExpense}>Download Expenses</Button>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
         gap: "1rem", alignItems:"flex-start",
         }}

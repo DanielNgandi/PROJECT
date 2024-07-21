@@ -1,11 +1,13 @@
 const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient();
-const UNCATEGORIZED_BUDGET_ID = 0;
+const UNCATEGORIZED_BUDGET_NAME = "uncategorized";
 
 const getBudgets = async (req, res) => {
   try {
+    const userId = req.userId;
   const budgets = await prisma.budget.findMany({
+    where: { userId: userId }, 
     include: { expenses: true },
   });
   res.json(budgets);
@@ -17,10 +19,11 @@ const getBudgets = async (req, res) => {
 
 const createBudget = async (req, res) => {
   
-  const { name, max } = req.body;
+  const { name, max} = req.body;
   try {
+  const userId = req.userId;
   const budget = await prisma.budget.create({
-    data: { name, max },
+    data: { name, max, userId},
   });
   res.json(budget);
 } catch (error) {
@@ -32,13 +35,14 @@ const createBudget = async (req, res) => {
 const deleteBudget = async (req, res) => {
   const { id } = req.params;
   try {
+    const userId = req.userId;
   await prisma.expense.updateMany({
-    where: { budgetId: parseInt(id) },
-    data: { budgetId: UNCATEGORIZED_BUDGET_ID },
+    where: { budgetId: parseInt(id), userId: userId },
+    data: { budgetId: UNCATEGORIZED_BUDGET_NAME },
   });
  
   const budget = await prisma.budget.delete({
-    where: { id: parseInt(id) },
+    where: { id: parseInt(id), userId: userId },
   });
   res.json(budget);
 } catch (error) {

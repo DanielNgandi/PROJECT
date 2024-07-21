@@ -3,6 +3,7 @@ import AuthForm from "./components/authentication/AuthForm"
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Budget from './pages/Budget';
 import { BudgetsProvider } from './context/BudgetContex';
+import { UserProvider} from "./context/logincontex"
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -12,11 +13,13 @@ const App = () => {
     const token = localStorage.getItem('authToken');
     if (token) {
       setIsAuthenticated(true);
+      setUser({ id: token });
     }
   }, [])
 
   return  (
     // <Budget />
+    <UserProvider>
     <BudgetsProvider>
     <Router>
       
@@ -28,6 +31,7 @@ const App = () => {
       
     </Router>
     </BudgetsProvider>
+    </UserProvider>
   )
 };
 

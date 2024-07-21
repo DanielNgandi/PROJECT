@@ -8,8 +8,9 @@ function uncategorizedBudgetCard(props) {
         (total, expense) => total + expense.amount, 0
       )
         if (amount === 0) return null
+        const max = undefined;
   return (
-    <BudgetCard amount={amount} name="uncategorized" gray {...props}/>
+    <BudgetCard amount={amount} max={max} name="uncategorized" gray {...props}/>
       
   )
 }

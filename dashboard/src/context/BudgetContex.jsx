@@ -1,5 +1,6 @@
 import React, { useContext,createContext, useState, useEffect} from "react";
 import axios from 'axios';
+import{useUser } from "./logincontex"
 //import {v4 as uuidv4} from 'uuid';
 //import useLocalStorage from "../Hook/storage";
 
@@ -12,14 +13,23 @@ export  function useBudgets() {
 }
 
 export const BudgetsProvider = ({children}) => {
+  const {User} = useUser();
    const [budgets, setBudgets]= useState([]);
    const  [expenses, setExpenses] =useState([]);
 
    useEffect(() => {
-    axios.get('http://localhost:5500/budgets').then(res => setBudgets(res.data));
-    axios.get('http://localhost:5500/expenses').then(res => setExpenses(res.data));
-  }, []);
+    if (User) {
+      axios.get('http://localhost:5500/budgets', {
+        headers: { 'Authorization': `Bearer ${User.id}` }
+      }).then(res => setBudgets(res.data));
+      
+      axios.get('http://localhost:5500/expenses', {
+        headers: { 'Authorization': `Bearer ${User.id}` }
+      }).then(res => setExpenses(res.data));
+    }
+  }, [User]);
 console.log(expenses)
+
 function getBudgetExpenses(budgetId){
      return expenses.filter(expenses => expenses.budgetId === budgetId); 
    }
@@ -30,7 +40,9 @@ async function addExpense({ description, amount, budgetId }) {
         
         let uncategorizedBudget = budgets.find(b => b.name === UNCATEGORIZED_BUDGET_NAME);
         if (!uncategorizedBudget) {
-          const response = await axios.post('http://localhost:5500/budgets', { name: UNCATEGORIZED_BUDGET_NAME, max: 0});
+          const response = await axios.post('http://localhost:5500/budgets', { name: UNCATEGORIZED_BUDGET_NAME, 
+            max: 0}, { 
+            headers: { 'Authorization': `Bearer ${User.id}` } });
           uncategorizedBudget = response.data;
           setBudgets(prevBudgets => [...prevBudgets, uncategorizedBudget]);
         }
@@ -40,7 +52,9 @@ async function addExpense({ description, amount, budgetId }) {
       const payload = { description,  amount: parseFloat(amount), budgetId: parsedBudgetId };
       console.log("Payload to send:", payload);
 
-      const response = await axios.post('http://localhost:5500/expenses', payload);
+      const response = await axios.post('http://localhost:5500/expenses', payload, {
+        headers: { 'Authorization': `Bearer ${User.id}` }
+      });
       setExpenses(prevExpenses => [...prevExpenses, response.data]);
       console.log('Updated Expenses:', [...prevExpenses, response.data]);
     } catch (error) {
@@ -49,14 +63,24 @@ async function addExpense({ description, amount, budgetId }) {
   }
   
 async function addBudget ({ name, max }){
-  const response = await axios.post('http://localhost:5500/budgets', { name, max });
+  if (!User) {
+    console.error("User is not defined");
+    return;
+  }
+  console.log("User object:", User);
+  const response = await axios.post('http://localhost:5500/budgets', 
+    { name, max }, {
+    headers: { 'Authorization': `Bearer ${User.id}` }
+  });
   setBudgets(prevBudgets => [...prevBudgets, response.data]);
 }
    console.log(addBudget)
 
 async function deleteBudget ({id}){
   try {
-  await axios.delete(`http://localhost:5500/budgets/${id}`);
+  await axios.delete(`http://localhost:5500/budgets/${id}`, {
+    headers: { 'Authorization': `Bearer ${User.id}` }
+  });
   setBudgets(prevBudgets => prevBudgets.filter(budget => budget.id !== id));
   setExpenses(prevExpenses => prevExpenses.map(expense => {
     if (expense.budgetId !== id) return expense;
@@ -68,7 +92,9 @@ async function deleteBudget ({id}){
 }
 
 async function deleteExpense({id}){
-    await axios.delete(`http://localhost:5500/expenses/${id}`);
+    await axios.delete(`http://localhost:5500/expenses/${id}`, {
+      headers: { 'Authorization': `Bearer ${User.id}` }
+    });
     setExpenses(prevExpenses => prevExpenses.filter(expense => expense.id !== id));
   }
 

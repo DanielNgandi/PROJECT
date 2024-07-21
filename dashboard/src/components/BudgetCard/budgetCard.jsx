@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { Button, Card, ProgressBar, Stack } from 'react-bootstrap';
 import { UNCATEGORIZED_BUDGET_NAME } from '../../context/BudgetContex';
+import { currencyFormatter } from '../../utils';
 export const BudgetCard = ({ 
   name, 
   amount, 
@@ -30,11 +31,12 @@ export const BudgetCard = ({
         <Card.Title className="d-flex justify-content-between align-items-baseline fw-normal mb-3">
             <div className='me-2'>{name}</div>
             <div className='d-flex align-items-center'>
-              {amount} 
-              {max && name !== UNCATEGORIZED_BUDGET_NAME && max !== 0 &&  (<span className='text-muted fs-6 ms-2' > / {max}</span>)}          
+            <span className="me-2">{currencyFormatter.format(amount)}</span>
+              {max !== undefined && name !== UNCATEGORIZED_BUDGET_NAME && max !== 0 &&  (<span 
+              className='text-muted fs-6 ms-2' > / {currencyFormatter.format(max)}</span>)}          
             </div>
         </Card.Title>
-        {max && name !== UNCATEGORIZED_BUDGET_NAME && max !== 0 &&(
+        {max !== undefined && name !== UNCATEGORIZED_BUDGET_NAME && max !== 0 &&(
           <ProgressBar className='rounded-pill' 
             variant={getProgressBarVariant(amount, max)}       
         min={0}

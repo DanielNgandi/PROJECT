@@ -6,7 +6,10 @@ const prisma = new PrismaClient();
 
 const getExpenses = async (req, res) => {
   try{
-  const expenses = await prisma.expense.findMany();
+    const userId = req.userId;
+  const expenses = await prisma.expense.findMany({
+    where: { userId: userId },
+  });
   res.json(expenses);
   }catch (error) {
     console.error("Error fetching expense", error);
@@ -21,11 +24,13 @@ const createExpense = async (req, res) => {
   }
 
   try {
+    const userId = req.userId;
     const expense = await prisma.expense.create({
       data: {
         description,
         amount: parseFloat(amount),
         budgetId,
+        userId, 
       },
     });
 
@@ -39,8 +44,9 @@ const createExpense = async (req, res) => {
 const deleteExpense = async (req, res) => {
   const { id } = req.params;
   try{
+    const userId = req.userId;
   const expense = await prisma.expense.delete({
-    where: { id: parseInt(id)},
+    where: { id: parseInt(id), userId: userId },
   });
   res.json(expense);
 } catch (error) {

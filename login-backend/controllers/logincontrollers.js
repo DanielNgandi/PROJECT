@@ -13,13 +13,13 @@ exports.signup = async (req, res) => {
     if  (!username || !email || !password){
         return res.status(400).json({ error: "username,Email and password are required." });
       }
-    const existingUser = await prisma.logins.findUnique({ where: { email } });
+    const existingUser = await prisma.user.findUnique({ where: { email } });
     if (existingUser) {
       return res.status(400).json({ error: 'User already exists' });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await prisma.logins.create({
+    const User = await prisma.user.create({
       data: {
         username:username,
         email: email,
@@ -27,7 +27,7 @@ exports.signup = async (req, res) => {
       },
     });
 
-    res.status(201).json({ message: 'User registered successfully', user });
+    res.status(201).json({ message: 'User registered successfully', User });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'internal server error'});
@@ -43,7 +43,7 @@ exports.signin = async (req, res) => {
       }
   
 
-    const user = await prisma.logins.findUnique({ where: { email } });
+    const user = await prisma.user.findUnique({ where: { email } });
     if (!user) {
       return res.status(400).json({ error: 'Invalid credentials' });
     }
@@ -69,13 +69,13 @@ exports.resetPassword = async (req, res) => {
         return res.status(400).json({ error: 'Invalid request' });
       }
   
-      const user = await prisma.logins.findUnique({ where: { email } });
+      const user = await prisma.user.findUnique({ where: { email } });
       if (!user) {
         return res.status(400).json({ error: 'No account found with that email' });
       }
   
       const hashedPassword = await bcrypt.hash(newPassword, 10);
-      await prisma.logins.update({
+      await prisma.user.update({
         where: { email },
         data: { password: hashedPassword },
       });

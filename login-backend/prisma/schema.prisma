@@ -5,13 +5,15 @@ datasource db {
     provider = "mysql"
     url = env("DATABASE_URL") 
 }
-model logins{
-    id Int @id @default(autoincrement())
-    username String
-    email String @unique
-    password String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+model User{
+  id Int @id @default(autoincrement())
+  username String
+  email String @unique
+  password String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  budgets   Budget[]
+  expenses  Expense[]
 }
 
 model Budget {
@@ -20,6 +22,8 @@ model Budget {
   max       Float
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  userId    Int
+  user      User   @relation(fields: [userId], references: [id])
   expenses  Expense[]
 }
 
@@ -31,4 +35,6 @@ model Expense {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   Budget      Budget   @relation(fields: [budgetId], references: [id])
+  userId      Int
+  user        User   @relation(fields: [userId], references: [id])
 }
